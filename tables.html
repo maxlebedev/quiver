@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quiver Tables</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000;
+    --rule-grey:#808080;
+    --rule-light:#bfbfbf;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:#e7e5e0;
+    margin:0;
+    padding:24px 0 48px;
+    font-family:'Alegreya', serif;
+  }
+  .page{
+    width:612pt;
+    height:792pt;
+    background:#fff;
+    margin:0 auto 28px;
+    padding:32pt 36pt 26pt;
+    position:relative;
+    box-shadow:0 2px 14px rgba(0,0,0,0.18);
+    font-size:9.2pt;
+    line-height:1.42;
+    color:var(--ink);
+    overflow:hidden;
+    page-break-after:always;
+    break-after:page;
+  }
+  .page:last-child{page-break-after:auto;break-after:auto;}
+
+  /* ---- Title (page 1 only) ---- */
+  .title{
+    font-family:'IM Fell English SC', serif;
+    font-size:30pt;
+    text-align:center;
+    letter-spacing:3px;
+    margin:0 0 6pt;
+    font-weight:400;
+    line-height:1.1;
+  }
+  .title-rule{margin:0 0 11pt;}
+  .title-rule .bar{height:1.1pt;background:var(--ink);}
+  .title-rule .bar2{height:0.9pt;background:var(--rule-grey);margin-top:2.5pt;}
+
+  /* running page title on page 2 */
+  .running-title{
+    font-family:'IM Fell English SC', serif;
+    font-size:13pt;
+    text-align:center;
+    letter-spacing:2px;
+    margin:0 0 6pt;
+    line-height:1.1;
+  }
+  .running-rule{height:1.1pt;background:var(--ink);margin-bottom:2.5pt;}
+  .running-rule2{height:0.9pt;background:var(--rule-grey);margin-bottom:10pt;}
+
+  /* ---- two column layout ---- */
+  .columns{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    column-gap:24pt;
+  }
+  .col-left{padding-right:6pt;}
+  .col-right{padding-left:6pt;border-left:1pt solid var(--rule-light);}
+
+  /* ---- section headers ---- */
+  h2{
+    font-family:'Alegreya', serif;
+    font-size:14pt;
+    font-weight:400;
+    margin:9pt 0 3pt;
+    line-height:1.15;
+  }
+  .columns > div > h2:first-child{margin-top:0;}
+
+  h2 {
+    margin: 9pt 0 6pt;
+  }
+  h2::after {
+    content: '';
+    display: block;
+    height: 11px;
+    margin-top: 3pt;
+    /* grey lines, ink-coloured centre */
+    background: linear-gradient(90deg,
+      var(--rule-grey) calc(50% - 6px),
+      var(--ink) 0 calc(50% + 6px),
+      var(--rule-grey) 0);
+    /* cut that colour into: fletching + left line + right line */
+    --fletch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 11'%3E%3Cpath d='M5 10.5V5.5M5 5.5L1.2 1M5 5.5L8.8 1' stroke='black' stroke-width='0.8' fill='none'/%3E%3C/svg%3E");
+    --line: linear-gradient(#000 0 0);
+    -webkit-mask:
+      var(--fletch) center / 10px 11px no-repeat,
+      var(--line) left center / calc(50% - 16px) 1pt no-repeat,
+      var(--line) right center / calc(50% - 16px) 1pt no-repeat;
+            mask:
+      var(--fletch) center / 10px 11px no-repeat,
+      var(--line) left center / calc(50% - 16px) 1pt no-repeat,
+      var(--line) right center / calc(50% - 16px) 1pt no-repeat;
+  }
+
+  p{margin:0 0 5pt;}
+  b{font-weight:700;}
+
+  /* ---- tables ---- */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:0 0 3pt;
+  }
+  td{
+    padding:2.6pt 5pt;
+    vertical-align:top;
+  }
+  tr:nth-child(even) td{background:#efefef;}
+  td.n{
+    font-weight:700;
+    text-align:right;
+    width:1%;
+    white-space:nowrap;
+    padding-right:6pt;
+  }
+  table.roll td:not(.n){width:24%;}
+  table.bonds td:not(.n){width:50%;}
+  table.items th{
+    font-weight:700;
+    text-align:right;
+    vertical-align:top;
+    padding:2.6pt 6pt 2.6pt 5pt;
+    width:15%;
+  }
+  table.items td{width:35%;}
+  tr:nth-child(even) th{background:#efefef;}
+  table.signature th{width:22%;}
+  table.signature td{width:78%;}
+
+  table.kits td{width:25%;}
+  table.kits tr.head th{
+    background:#a9a9a9;
+    text-align:left;
+    font-weight:700;
+    padding:3pt 5pt;
+  }
+  table.kits tr:nth-child(even) td{background:none;}
+  table.kits tr:nth-child(odd) td{background:#efefef;}
+
+  /* ---- cross-reference to an external table ---- */
+  a.xref{
+    display:flex;
+    align-items:center;
+    gap:10pt;
+    margin:14pt auto 0;
+    width:70%;
+    padding:7pt 12pt;
+    border-top:1.1pt solid var(--ink);
+    border-bottom:0.9pt solid var(--rule-grey);
+    background:#f6f6f6;
+    color:var(--ink);
+    text-decoration:none;
+  }
+  a.xref:hover{background:#efefef;}
+  .xref-arrow{font-size:16pt;line-height:1;}
+  .xref-text{display:flex;flex-direction:column;line-height:1.3;}
+  .xref-title{font-family:'IM Fell English SC', serif;font-size:12pt;letter-spacing:1px;}
+  .xref-desc{font-style:italic;}
+  .xref-url{font-size:7.2pt;letter-spacing:0.5px;color:var(--rule-grey);}
+
+  .note{
+    font-size:7.4pt;
+    font-style:italic;
+    color:#444;
+    margin:0 0 10pt;
+  }
+  h2{text-align:center;}
+  .page > h2:first-of-type{margin-top:0;}
+
+  /* ---- footer ---- */
+  .footer{
+    position:absolute;
+    left:36pt; right:36pt; bottom:20pt;
+    border-top:1pt solid var(--rule-light);
+    padding-top:5pt;
+    display:flex;
+    justify-content:space-between;
+    font-size:7.2pt;
+    letter-spacing:1.5px;
+    color:var(--rule-grey);
+  }
+
+  @page{
+    size:612pt 792pt;
+    margin:0;
+  }
+  @media print{
+    body{background:#fff;padding:0;margin:0;}
+    .page{box-shadow:none;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 ============ -->
+<div class="page">
+  <div class="title">Quiver Tables</div>
+  <div class="title-rule"><div class="bar"></div><div class="bar2"></div></div>
+
+  <h2>Description</h2>
+  <table class="roll">
+    <tr><td class="n">10</td><td>Apprentice</td><td class="n">25</td><td>Fair</td><td class="n">40</td><td>Kvetching</td><td class="n">55</td><td>Rude</td></tr>
+    <tr><td class="n">11</td><td>Arrogant</td><td class="n">26</td><td>Fanatical</td><td class="n">41</td><td>Lazy</td><td class="n">56</td><td>Sarcastic</td></tr>
+    <tr><td class="n">12</td><td>Bastard</td><td class="n">27</td><td>Feral</td><td class="n">42</td><td>Lowborn</td><td class="n">57</td><td>Serene</td></tr>
+    <tr><td class="n">13</td><td>Boisterous</td><td class="n">28</td><td>Foolish</td><td class="n">43</td><td>Masochistic</td><td class="n">58</td><td>Servile</td></tr>
+    <tr><td class="n">14</td><td>Caring</td><td class="n">29</td><td>Gluttonous</td><td class="n">44</td><td>Mute</td><td class="n">59</td><td>Stunning</td></tr>
+    <tr><td class="n">15</td><td>Conscripted</td><td class="n">30</td><td>Greedy</td><td class="n">45</td><td>Nasty</td><td class="n">60</td><td>Thoughtful</td></tr>
+    <tr><td class="n">16</td><td>Cowardly</td><td class="n">31</td><td>Grizzled</td><td class="n">46</td><td>Noble</td><td class="n">61</td><td>Twisted</td></tr>
+    <tr><td class="n">17</td><td>Cursed</td><td class="n">32</td><td>Heretical</td><td class="n">47</td><td>Old</td><td class="n">62</td><td>Ugly</td></tr>
+    <tr><td class="n">18</td><td>Daring</td><td class="n">33</td><td>Highborn</td><td class="n">48</td><td>Optimistic</td><td class="n">63</td><td>Unwilling</td></tr>
+    <tr><td class="n">19</td><td>Deformed</td><td class="n">34</td><td>Honest</td><td class="n">49</td><td>Pacifist</td><td class="n">64</td><td>Veteran</td></tr>
+    <tr><td class="n">20</td><td>Dying</td><td class="n">35</td><td>Hotheaded</td><td class="n">50</td><td>Penitent</td><td class="n">65</td><td>Weird</td></tr>
+    <tr><td class="n">21</td><td>Errant</td><td class="n">36</td><td>Irresponsible</td><td class="n">51</td><td>Quiet</td><td class="n">66</td><td>Whispery</td></tr>
+    <tr><td class="n">22</td><td>Erudite</td><td class="n">37</td><td>Jaded</td><td class="n">52</td><td>Reckless</td><td class="n">67</td><td>Worthless</td></tr>
+    <tr><td class="n">23</td><td>Exiled</td><td class="n">38</td><td>Jolly</td><td class="n">53</td><td>Reformed</td><td class="n">68</td><td>Xenophobic</td></tr>
+    <tr><td class="n">24</td><td>Failed</td><td class="n">39</td><td>Kindly</td><td class="n">54</td><td>Retired</td><td class="n">69</td><td>Young</td></tr>
+  </table>
+  <p class="note">Roll d6 (tens) + d10 (units). d10=10 counts as 0 (e.g. d6=1, d10=10 ➺ 10).</p>
+
+  <h2>Occupation</h2>
+  <table class="roll">
+    <tr><td class="n">10</td><td>Acolyte</td><td class="n">25</td><td>Courtier</td><td class="n">40</td><td>Jester</td><td class="n">55</td><td>Smith</td></tr>
+    <tr><td class="n">11</td><td>Acrobat</td><td class="n">26</td><td>Diplomat</td><td class="n">41</td><td>Knight</td><td class="n">56</td><td>Soldier</td></tr>
+    <tr><td class="n">12</td><td>Alchemist</td><td class="n">27</td><td>Drunkard</td><td class="n">42</td><td>Leech</td><td class="n">57</td><td>Spy</td></tr>
+    <tr><td class="n">13</td><td>Antiquarian</td><td class="n">28</td><td>Duelist</td><td class="n">43</td><td>Mason</td><td class="n">58</td><td>Templar</td></tr>
+    <tr><td class="n">14</td><td>Assassin</td><td class="n">29</td><td>Explorer</td><td class="n">44</td><td>Merchant</td><td class="n">59</td><td>Thief</td></tr>
+    <tr><td class="n">15</td><td>Bard</td><td class="n">30</td><td>Folklorist</td><td class="n">45</td><td>Oracle</td><td class="n">60</td><td>Tomb Robber</td></tr>
+    <tr><td class="n">16</td><td>Beastbitten</td><td class="n">31</td><td>Friar</td><td class="n">46</td><td>Outlander</td><td class="n">61</td><td>Urchin</td></tr>
+    <tr><td class="n">17</td><td>Beekeeper</td><td class="n">32</td><td>Grave Robber</td><td class="n">47</td><td>Pirate</td><td class="n">62</td><td>Vagabond</td></tr>
+    <tr><td class="n">18</td><td>Bodyguard</td><td class="n">33</td><td>Guard</td><td class="n">48</td><td>Raider</td><td class="n">63</td><td>Vessel</td></tr>
+    <tr><td class="n">19</td><td>Bounty Hunter</td><td class="n">34</td><td>Herbalist</td><td class="n">49</td><td>Ranger</td><td class="n">64</td><td>Wanderer</td></tr>
+    <tr><td class="n">20</td><td>Burglar</td><td class="n">35</td><td>Highwayman</td><td class="n">50</td><td>Rat-catcher</td><td class="n">65</td><td>Wastrel</td></tr>
+    <tr><td class="n">21</td><td>Chirugeon</td><td class="n">36</td><td>Hunter</td><td class="n">51</td><td>Scout</td><td class="n">66</td><td>Witch</td></tr>
+    <tr><td class="n">22</td><td>Cleric</td><td class="n">37</td><td>Innkeeper</td><td class="n">52</td><td>Scribe</td><td class="n">67</td><td>Witch-hunter</td></tr>
+    <tr><td class="n">23</td><td>Conman</td><td class="n">38</td><td>Inquisitor</td><td class="n">53</td><td>Sellsword</td><td class="n">68</td><td>Wizard</td></tr>
+    <tr><td class="n">24</td><td>Cook</td><td class="n">39</td><td>Jailer</td><td class="n">54</td><td>Servant</td><td class="n">69</td><td>Zealot</td></tr>
+  </table>
+  <p class="note">Roll d6 (tens) + d10 (units). d10=10 counts as 0 (e.g. d6=1, d10=10 ➺ 10).</p>
+
+  <div class="footer"><span>QUIVER TABLES</span><span>PAGE 1 OF 4</span></div>
+</div>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="page">
+  <div class="running-title">Quiver Tables</div>
+  <div class="running-rule"></div>
+  <div class="running-rule2"></div>
+
+  <h2>Bonds</h2>
+  <table class="bonds">
+    <tr><td class="n">1</td><td>They are my <b>charge</b>. I must protect them at all costs</td><td class="n">6</td><td>They have saved my life, I'm forever in their <b>debt</b>.</td></tr>
+    <tr><td class="n">2</td><td>They are my <b>rival</b>. If anyone defeats them, it will be me.</td><td class="n">7</td><td>They and I share a <b>secret</b> that we will take to the grave.</td></tr>
+    <tr><td class="n">3</td><td>They are a <b>paragon</b>, they are everything I wish to one day be.</td><td class="n">8</td><td>They <b>inspire</b> me to be the best version of myself.</td></tr>
+    <tr><td class="n">4</td><td>They are my <b>family</b>, found or otherwise.</td><td class="n">9</td><td>They and I went through something <b>awful</b> together.</td></tr>
+    <tr><td class="n">5</td><td>They are my <b>leader</b>, I trust their judgement.</td><td class="n">10</td><td>They have a lot to learn, and I'm here to <b>guide</b> them.</td></tr>
+  </table>
+  <div style="height:8pt"></div>
+
+  <h2>Power Word: Forms</h2>
+  <table class="roll">
+    <tr><td class="n">1</td><td>Aura</td><td class="n">6</td><td>Column</td><td class="n">11</td><td>Field</td><td class="n">16</td><td>Steed</td></tr>
+    <tr><td class="n">2</td><td>Blade</td><td class="n">7</td><td>Cone</td><td class="n">12</td><td>Hand</td><td class="n">17</td><td>Swarm</td></tr>
+    <tr><td class="n">3</td><td>Bubble</td><td class="n">8</td><td>Disk</td><td class="n">13</td><td>Path</td><td class="n">18</td><td>Tangle</td></tr>
+    <tr><td class="n">4</td><td>Cage</td><td class="n">9</td><td>Door</td><td class="n">14</td><td>Ring</td><td class="n">19</td><td>Wave</td></tr>
+    <tr><td class="n">5</td><td>Cloak</td><td class="n">10</td><td>Eye</td><td class="n">15</td><td>Serpent</td><td class="n">20</td><td>Web</td></tr>
+  </table>
+  <p class="note">Power Words <b>must</b> be rolled.</p>
+
+  <h2>Power Word: Essence</h2>
+  <table class="roll">
+    <tr><td class="n">1</td><td>Acid</td><td class="n">6</td><td>Flesh</td><td class="n">11</td><td>Light</td><td class="n">16</td><td>Shadow</td></tr>
+    <tr><td class="n">2</td><td>Ant</td><td class="n">7</td><td>Glass</td><td class="n">12</td><td>Lightning</td><td class="n">17</td><td>Stone</td></tr>
+    <tr><td class="n">3</td><td>Bone</td><td class="n">8</td><td>Ice</td><td class="n">13</td><td>Mud</td><td class="n">18</td><td>Water</td></tr>
+    <tr><td class="n">4</td><td>Blood</td><td class="n">9</td><td>Ink</td><td class="n">14</td><td>Sand</td><td class="n">19</td><td>Wind</td></tr>
+    <tr><td class="n">5</td><td>Flame</td><td class="n">10</td><td>Lead</td><td class="n">15</td><td>Salt</td><td class="n">20</td><td>Wood</td></tr>
+  </table>
+  <p class="note">Power Words <b>must</b> be rolled.</p>
+
+  <h2>Power Word: Effect</h2>
+  <table class="roll">
+    <tr><td class="n">1</td><td>Absorbing</td><td class="n">6</td><td>Delicate</td><td class="n">11</td><td>Freezing</td><td class="n">16</td><td>Repelling</td></tr>
+    <tr><td class="n">2</td><td>Binding</td><td class="n">7</td><td>Duplicating</td><td class="n">12</td><td>Invisible</td><td class="n">17</td><td>Revealing</td></tr>
+    <tr><td class="n">3</td><td>Concealing</td><td class="n">8</td><td>Enveloping</td><td class="n">13</td><td>Luminous</td><td class="n">18</td><td>Soothing</td></tr>
+    <tr><td class="n">4</td><td>Consuming</td><td class="n">9</td><td>Expanding</td><td class="n">14</td><td>Melting</td><td class="n">19</td><td>Transforming</td></tr>
+    <tr><td class="n">5</td><td>Crushing</td><td class="n">10</td><td>Flaming</td><td class="n">15</td><td>Oozing</td><td class="n">20</td><td>Withering</td></tr>
+  </table>
+  <p class="note">Power Words <b>must</b> be rolled.</p>
+
+  <a class="xref" href="https://cairnrpg.com/second-edition/wardens-guide/spellbooks/" target="_blank" rel="noopener">
+    <span class="xref-arrow">➺</span>
+    <span class="xref-text">
+      <span class="xref-title">Relic Spells</span>
+      <span class="xref-desc">Roll on the Spellbooks table in Cairn's Warden's Guide</span>
+      <span class="xref-url">cairnrpg.com/second-edition/wardens-guide/spellbooks</span>
+    </span>
+  </a>
+
+  <div class="footer"><span>QUIVER TABLES</span><span>PAGE 2 OF 4</span></div>
+</div>
+
+<!-- ============ PAGE 3 ============ -->
+<div class="page">
+  <div class="running-title">Quiver Tables</div>
+  <div class="running-rule"></div>
+  <div class="running-rule2"></div>
+
+  <h2>Starting Items</h2>
+  <table class="items">
+    <tr><th>Antitoxin</th><td>3 charges</td><th>Caltrops</th><td></td></tr>
+    <tr><th>Chainmail</th><td>1 Armor, bulky, foes miss you on a 1</td><th>Chalk</th><td>tiny</td></tr>
+    <tr><th>Spare Clothes</th><td>(Common/Wilderness/Fancy)</td><th>Compass</th><td>tiny</td></tr>
+    <tr><th>Cooking Supplies</th><td>bulky</td><th>Crowbar</th><td>tool</td></tr>
+    <tr><th>Good Booze</th><td>tiny</td><th>Hammer</th><td>tool</td></tr>
+    <tr><th>Hatchet</th><td>tool</td><th>Helm</th><td>1 Armor</td></tr>
+    <tr><th>Iron spike</th><td>6 charges</td><th>Lockpicks</th><td>tiny, 3 charges, consumed on use</td></tr>
+    <tr><th>Mirror</th><td>tiny</td><th>Net</th><td></td></tr>
+    <tr><th>Padlock &amp; Key</th><td>tiny</td><th>Pickaxe</th><td>tool</td></tr>
+    <tr><th>Pole</th><td>10ft</td><th>Poultice</th><td>Ignore penalties from a Wound until Camp, 2 charges</td></tr>
+    <tr><th>Quiver</th><td>Arrows aren’t tracked</td><th>Rations</th><td>3 charges</td></tr>
+    <tr><th>Rope</th><td>50ft</td><th>Salt</th><td>tiny</td></tr>
+    <tr><th>Saw</th><td>tool</td><th>Shield</th><td>1 Armor, break to protect an ally from an attack</td></tr>
+    <tr><th>Shovel</th><td>tool</td><th>Instrument</th><td>Lute/Pipes/Drum</td></tr>
+    <tr><th>Spyglass</th><td>tiny</td><th>Talisman</th><td>tiny, holds one random relic spell. Single use</td></tr>
+    <tr><th>Tinker's Kit</th><td>Bulky, used to repair armor in camp</td><th>Torch</th><td>3 charges, Characters in darkness have a bane to all actions</td></tr>
+    <tr><th>Vial</th><td>3 charges</td><th>Weapon, Light</th><td>1d4 damage. One handed. Can dual wield</td></tr>
+    <tr><th>Weapon, Medium</th><td>1d6 damage. One handed</td><th>Weapon, Ranged</th><td>1d8 damage. Two handed. Ignore retaliations</td></tr>
+    <tr><th>Weapon, Heavy</th><td>1d10 damage. Two handed</td><th>Whistle</th><td>tiny</td></tr>
+    <tr><th>Bandolier</th><td>Holds 4 tiny items</td><th>Tent</th><td>Bulky, sleeps two</td></tr>
+  </table>
+  <div style="height:8pt"></div>
+
+  <h2>Signature Items</h2>
+  <table class="items signature">
+    <tr><th>Brigandine</th><td>2 Armor, bulky. Can be worn over chainmail</td></tr>
+    <tr><th>Relic</th><td>Imbued with a spell. roll 3 times on the Relic spell table, pick your favorite. 3 charges</td></tr>
+    <tr><th>Grimoire</th><td>bulky, Contains 5 random Power Words (roll 5 times on any of the tables)</td></tr>
+    <tr><th>Alchemy Supplies</th><td>bulky, used to craft potions in camp. Requires vials</td></tr>
+    <tr><th>Almanac</th><td>Contains helpful lore on 6 topics</td></tr>
+    <tr><th>Weapon, silvered</th><td>The bane of many a monster</td></tr>
+    <tr><th>Dog</th><td>Keen senses, knows tricks, does not participate in combat</td></tr>
+    <tr><th>Grappling Hook</th><td>50ft</td></tr>
+  </table>
+
+  <div class="footer"><span>QUIVER TABLES</span><span>PAGE 3 OF 4</span></div>
+</div>
+
+<!-- ============ PAGE 4 ============ -->
+<div class="page">
+  <div class="running-title">Quiver Tables</div>
+  <div class="running-rule"></div>
+  <div class="running-rule2"></div>
+
+  <h2>Kits</h2>
+  <table class="kits">
+    <tbody>
+      <tr class="head"><th>1. Doctor</th><th>2. Guardian</th><th>3. Monster Hunter</th><th>4. Thief</th></tr>
+      <tr><td>Alchemy Supplies</td><td>Brigandine</td><td>Heavy Silvered Weapon</td><td>Grappling Hook</td></tr>
+      <tr><td>3x vials</td><td>Shield</td><td>Chainmail</td><td>2x Light weapons</td></tr>
+      <tr><td>2x Poultice</td><td>Medium Weapon</td><td>Helm</td><td>3x Lockpicks</td></tr>
+      <tr><td>3x Antitoxin</td><td>Chainmail</td><td>Talisman</td><td>Pole</td></tr>
+      <tr><td>Saw</td><td>Tinker’s Kit</td><td>Net</td><td>6x Iron Spike</td></tr>
+      <tr><td>3x Rations</td><td>3x Torches</td><td>3x Torches</td><td>3x Torches</td></tr>
+    </tbody>
+    <tbody>
+      <tr class="head"><th>5. Cleric</th><th>6. Scholar</th><th>7. Ranger</th><th>8. Witch</th></tr>
+      <tr><td>Relic</td><td>Almanac</td><td>Dog</td><td>Grimoire</td></tr>
+      <tr><td>Medium weapon</td><td>Ranged Weapon</td><td>Ranged Weapon</td><td>Chalk</td></tr>
+      <tr><td>Chainmail</td><td>Compass</td><td>Quiver</td><td>Mirror</td></tr>
+      <tr><td>Helm</td><td>Spyglass</td><td>Shovel</td><td>Whistle</td></tr>
+      <tr><td>2x Poultice</td><td>Musical Instrument</td><td>Cooking Supplies</td><td>Salt</td></tr>
+      <tr><td>3x Torches</td><td>3x Rations</td><td>3x Rations</td><td>3x Rations</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer"><span>QUIVER TABLES</span><span>PAGE 4 OF 4</span></div>
+</div>
+
+</body>
+</html>

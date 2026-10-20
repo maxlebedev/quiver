@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Quiver Rules</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiver</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
@@ -21,22 +22,18 @@
   }
   .page{
     width:612pt;
-    height:792pt;
+    max-width:calc(100% - 32px);
     background:#fff;
     margin:0 auto 28px;
-    padding:32pt 36pt 26pt;
+    padding:32pt 36pt 46pt;
     position:relative;
     box-shadow:0 2px 14px rgba(0,0,0,0.18);
     font-size:9.2pt;
     line-height:1.42;
     color:var(--ink);
-    overflow:hidden;
-    page-break-after:always;
-    break-after:page;
   }
-  .page:last-child{page-break-after:auto;break-after:auto;}
 
-  /* ---- Title (page 1 only) ---- */
+  /* ---- Title ---- */
   .title{
     font-family:'IM Fell English SC', serif;
     font-size:30pt;
@@ -50,39 +47,14 @@
   .title-rule .bar{height:1.1pt;background:var(--ink);}
   .title-rule .bar2{height:0.9pt;background:var(--rule-grey);margin-top:2.5pt;}
 
-  /* running page title on page 2 */
-  .running-title{
-    font-family:'IM Fell English SC', serif;
-    font-size:13pt;
-    text-align:center;
-    letter-spacing:2px;
-    margin:0 0 6pt;
-    line-height:1.1;
-  }
-  .running-rule{height:1.1pt;background:var(--ink);margin-bottom:2.5pt;}
-  .running-rule2{height:0.9pt;background:var(--rule-grey);margin-bottom:10pt;}
-
-  /* ---- two column layout ---- */
-  .columns{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    column-gap:24pt;
-  }
-  .col-left{padding-right:6pt;}
-  .col-right{padding-left:6pt;border-left:1pt solid var(--rule-light);}
-
   /* ---- section headers ---- */
   h2{
     font-family:'Alegreya', serif;
     font-size:14pt;
     font-weight:400;
-    margin:9pt 0 3pt;
     line-height:1.15;
-  }
-  .columns > div > h2:first-child{margin-top:0;}
-
-  h2 {
-    margin: 9pt 0 6pt;
+    text-align:center;
+    margin:9pt 0 6pt;
   }
   h2::after {
     content: '';
@@ -107,40 +79,24 @@
       var(--line) right center / calc(50% - 16px) 1pt no-repeat;
   }
 
-  /* ---- sub headings (Initiative, Attack Procedure...) ---- */
-  h3{
-    font-size:10.2pt;
-    font-style:italic;
-    font-weight:700;
-    margin:6pt 0 2pt;
-    line-height:1.2;
-  }
-  .columns h3:first-of-type{margin-top:4pt;}
-
-  p{margin:0 0 5pt;}
-  .tight p{margin:0;}
-
-  b{font-weight:700;}
-
-  ul{list-style:none;margin:0 0 5pt;padding:0;}
-  li{position:relative;padding-left:14pt;margin-bottom:0;}
-  li::before{
-    content:'➺';
-    position:absolute;
-    left:0;
+  /* ---- document links ---- */
+  a.doc{
+    display:flex;
+    align-items:center;
+    gap:12pt;
+    margin:0 0 12pt;
+    padding:9pt 14pt;
+    border-top:1.1pt solid var(--ink);
+    border-bottom:0.9pt solid var(--rule-grey);
+    background:#f6f6f6;
     color:var(--ink);
-    font-size:9pt;
-    line-height:1;
-    transform:translateY(25%);
+    text-decoration:none;
   }
-  ul.sub{margin:0 0 0 2pt;}
-  ul.sub li{padding-left:12pt;margin-bottom:0; }
-  ul.sub li::before{
-    content:'-';
-    transform:translateY(25%);
-
-  }
-  li > p{margin:0; }
+  a.doc:hover{background:#efefef;}
+  .doc-arrow{font-size:20pt;line-height:1;}
+  .doc-text{display:flex;flex-direction:column;line-height:1.35;}
+  .doc-title{font-family:'IM Fell English SC', serif;font-size:15pt;letter-spacing:1.5px;}
+  .doc-desc{font-style:italic;}
 
   /* ---- footer ---- */
   .footer{
@@ -148,223 +104,42 @@
     left:36pt; right:36pt; bottom:20pt;
     border-top:1pt solid var(--rule-light);
     padding-top:5pt;
-    display:flex;
-    justify-content:space-between;
     font-size:7.2pt;
     letter-spacing:1.5px;
     color:var(--rule-grey);
   }
 
-  @page{
-    size:612pt 792pt;
-    margin:0;
-  }
-  @media print{
-    body{background:#fff;padding:0;margin:0;}
-    .page{box-shadow:none;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @media (max-width:640px){
+    .page{padding:24pt 16px 46pt;}
+    .footer{left:16px;right:16px;}
   }
 </style>
 </head>
 <body>
 
-<!-- ============ PAGE 1 ============ -->
 <div class="page">
-  <div class="title">Quiver Rules</div>
+  <div class="title">Quiver</div>
   <div class="title-rule"><div class="bar"></div><div class="bar2"></div></div>
 
-  <div class="columns">
-    <!-- LEFT COLUMN -->
-    <div class="col-left">
-      <h2>Character Creation</h2>
-      <ul>
-        <li>Name, pronouns</li>
-        <li>Select two backgrounds
-          <ul class="sub">
-            <li>Each is a Description + Occupation pair. One is your past, one is your present. Tell us about them</li>
-          </ul>
-        </li>
-        <li>Pick items
-          <ul class="sub">
-            <li>Any 1 item from the Signature Item list</li>
-            <li>Any 5 items from the Starting Item list</li>
-            <li>Your maximum inventory size is 12. 2 for your hands, 10 on your body</li>
-          </ul>
-        </li>
-        <li>Each player selects a sentence from the bonds table, and another player
-          <ul class="sub">
-            <li>Agree on how the bond applies to your relationship</li>
-            <li>Each player without two bonds then does this again</li>
-          </ul>
-        </li>
-        <li>Work with the other players to come up with a group identity</li>
-      </ul>
-      <p>What you can achieve is defined in part by the tools available. </p>
-      <p>It's best to bring enough Torches, Rations, Weapons, and Armor </p>
-      <p>Take a look at the Kits for inspiration</p>
+  <h2>Contents</h2>
 
-      <h2>Game Terms</h2>
+  <a class="doc" href="rules.html">
+    <span class="doc-arrow">➺</span>
+    <span class="doc-text">
+      <span class="doc-title">Quiver Rules</span>
+      <span class="doc-desc">Character creation, conditions, rest, action &amp; reaction rolls, combat, and magic</span>
+    </span>
+  </a>
 
-      <div class="tight">
-        <p><b>Bane</b>: Remove a d6 from your roll for each bane</p>
-        <p><b>Background</b>: A phrase representing who you are or used to be. +d6 to relevant rolls</p>
-        <p><b>Crit</b>: Attack that rolls max die value. Bypass Armor and inflict direct damage</p>
-        <p><b>Hit</b>: Attack is greater than enemy Armor. Inflict the difference in damage</p>
-        <p><b>Graze</b>: Attack at/under enemy Armor. Decrease Armor by 1</p>
-        <p><b>Bulky</b>: takes 2 inventory slots</p>
-        <p><b>Tiny</b>: takes half of an inventory slot</p>
-        <p><b>Stacks X</b>: X of these fit per inventory slot</p>
-        <p><b>Step up</b>: Increase the die size one step d4➺d6➺d8➺d10➺d12</p>
-        <p><b>Step Down</b>: Decrease the die size one step d12➺d10➺d8➺d6➺d4</p>
-        <p><b>Push</b>: pay a cost, then reroll any rolled dice</p>
-        <p><b>Condition</b>: Stored in the inventory like items</p>
-        <p><b>Guard</b>: Your buffer against harm. Starts at 6. When it hits 0, take a wound, reset to 6, and carry over any excess damage.</p>
-      </div>
-    </div>
+  <a class="doc" href="tables.html">
+    <span class="doc-arrow">➺</span>
+    <span class="doc-text">
+      <span class="doc-title">Quiver Tables</span>
+      <span class="doc-desc">Descriptions, occupations, bonds, Power Words, items, and kits</span>
+    </span>
+  </a>
 
-    <!-- RIGHT COLUMN -->
-    <div class="col-right">
-
-      <h2>Conditions</h2>
-
-      <p>Conditions are stored in the inventory, like items.</p>
-      <p>If you get a condition but have no free slots, break an item and place the condition over it</p>
-      <ul>
-        <li><b>Fatigue</b>: acquired by failing to cast spells, or skipping food/sleep, straining yourself</li>
-        <li><b>Wound</b>: acquired by taking damage. The 6th Wound kills you
-          <ul class="sub">
-            <li>Some are serious, debilitating injuries that may never heal naturally. A shattered knee. A missing eye. A shadow curse</li>
-          </ul>
-        </li>
-        <li><b>Stress</b>: acquired by coming face to face with the unthinkable</li>
-      </ul>
-      <p>The list is not exhaustive</p>
-
-      <h2>Rest</h2>
-
-      <p>True recovery happens only during an extended stay in a place of civilization and safety</p>
-      <p>Barring that, it is always possible to set up camp</p>
-      <p>During camp, characters must consume a ration and spend a watch</p>
-      <p>Players may also:</p>
-      <ul>
-        <li>Mend Armor with Tinker's Kit</li>
-        <li>Make Rations out of plants and animals with Cooking Gear</li>
-        <li>Make Potions with Alchemical Supplies and reagents</li>
-        <li>Clear the party's Stressed condition with a Musical Instrument</li>
-        <li>Scout ahead, learning about nearby areas</li>
-        <li>Keep watch, gain the upper hand in a camp encounter</li>
-      </ul>
-      <p>Players clear one fatigue. Players can eat a second ration to clear a second fatigue</p>
-    </div>
-  </div>
-
-
-  <div class="footer"><span>QUIVER RULES</span><span>PAGE 1 OF 2</span></div>
-</div>
-
-<!-- ============ PAGE 2 ============ -->
-<div class="page">
-  <div class="running-title">Quiver Rules</div>
-  <div class="running-rule"></div>
-  <div class="running-rule2"></div>
-
-  <div class="columns">
-    <!-- LEFT COLUMN -->
-    <div class="col-left">
-      <h2>Action Rolls</h2>
-
-      <p>Whenever you use your skill to attempt an uncertain action, build and roll a dice pool</p>
-      <ul>
-        <li>Take one die if you have no wounds</li>
-        <li>Take one die if your inventory isn't full</li>
-        <li>Take one die if you have a relevant background</li>
-        <li>Take one die if you have relevant equipment</li>
-        <li>Take one die if you have assistance</li>
-        <li>Remove one die for every <b>bane</b></li>
-      </ul>
-      <p>If the pool has 0 dice, roll two dice and take the lower</p>
-      <p>If at least one of the dice you rolled was a 6, you succeed</p>
-      <p>You may gain <b>Fatigue</b> to <b>push</b></p>
-
-      <h2>Reaction Rolls</h2>
-
-      <p>When you avoid a consequence or cast a spell, build and roll a dice pool</p>
-      <ul>
-        <li>Start with 6 dice, then remove one for every condition you have</li>
-        <li>Remove one more die if any of your conditions are a <b>Wound</b></li>
-        <li>Remove one die if your inventory is full</li>
-        <li>Remove one die for every <b>bane</b></li>
-      </ul>
-      <p>If the result is 0, roll two dice and take the lower</p>
-      <p>If at least one of the dice you rolled was a 6, you succeed</p>
-      <p>You may gain <b>Fatigue</b> to <b>push</b></p>
-
-      <h2>Words of Power</h2>
-
-      <p>Your Grimoire contains the Words of Power you have mastered</p>
-      <p>To cast a spell, hold the Grimoire in both hands and construct a two-Word phrase. Explain the intent of your spell</p>
-      <p>Make a Reaction Roll</p>
-      <ul>
-        <li>An intent that stretches its Words, causes direct harm, or requires immense power is made with <b>banes</b></li>
-        <li>On a success, the spell is cast</li>
-        <li>On a failure, the caster gains one <b>Fatigue</b></li>
-        <li>The caster may gain another <b>Fatigue</b> to <b>push</b></li>
-      </ul>
-    </div>
-
-    <!-- RIGHT COLUMN -->
-    <div class="col-right">
-      <h2>Combat</h2>
-
-      <h3>Initiative</h3>
-      <ul>
-        <li>Pass a Reaction roll or skip the first turn of combat</li>
-        <li>Enemies always act after players</li>
-        <li>Current player chooses who gets to act next</li>
-      </ul>
-
-      <h3>Attack Procedure</h3>
-      <p>Roll your weapon's Attack die and compare it to enemy Armor</p>
-      <ul>
-        <li>If you roll the highest number, you crit. Deal your Attack as direct damage (ignoring Armor)</li>
-        <li>If Attack > Armor, deal the difference in damge</li>
-        <li>If Attack <= Armor, reduce armor by 1</li>
-        <li>If Attack < Armor, take the difference as retaliation damage</li>
-      </ul>
-
-      <p>Players always start combat with 6 Guard</p>
-      <ul>
-        <li>Every time your Guard is depleted to 0, gain a <b>Wound</b></li>
-        <li>If you gain a <b>Wound</b>, reset your Guard and apply the remaining damage</li>
-      </ul>
-
-      <h3>Maneuvers</h3>
-      <ul>
-        <li>You may attempt one Maneuver in addition to anything you do on your turn</li>
-        <li>Declare your intent</li>
-        <li>Make an Action roll with <b>banes</b> representing its difficulty</li>
-        <li>Regardless of your success or failure, an Adversary makes an attack against you</li>
-      </ul>
-
-      <h3>Inventory items</h3>
-      <ul>
-        <li>Interacting with items that aren't in your hands counts as a Maneuver</li>
-      </ul>
-
-      <h2>Relic Magic</h2>
-
-      <p>Items that hold magic power are called Relics</p>
-      <p>To invoke the relic's magic, spend a charge</p>
-      <p>Relics regain their charges when Resting in a place of power associated with the relic's origin</p>
-
-      <h2>Alchemy</h2>
-      <p>You may harvest magical plants and creatures into vials (once each)</p>
-      <p>While in camp, you may turn those reagents into potions</p>
-      <p>The potions temporarily give the drinker the reagent's properties</p>
-      <p>At character creation: pick 3 potion effects, GM picks side-effects</p>
-    </div>
-  </div>
-
-  <div class="footer"><span>QUIVER RULES</span><span>PAGE 2 OF 2</span></div>
+  <div class="footer">QUIVER</div>
 </div>
 
 </body>
