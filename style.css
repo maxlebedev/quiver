@@ -1,0 +1,271 @@
+/* ---- fonts (latin subset, self-hosted; licenses in fonts/) ---- */
+/* Alegreya is a variable font: one file per style covers every weight */
+@font-face{
+  font-family:'Alegreya';
+  font-style:normal;
+  font-weight:400 900;
+  font-display:swap;
+  src:url(fonts/alegreya.woff2) format('woff2');
+}
+@font-face{
+  font-family:'Alegreya';
+  font-style:italic;
+  font-weight:400 900;
+  font-display:swap;
+  src:url(fonts/alegreya-italic.woff2) format('woff2');
+}
+@font-face{
+  font-family:'IM Fell English SC';
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+  src:url(fonts/im-fell-english-sc.woff2) format('woff2');
+}
+
+:root{
+  --ink:#000;
+  --rule-grey:#808080;
+  --rule-light:#bfbfbf;
+  --ink-soft:#444;       /* notes */
+  --desk:#e7e5e0;        /* background behind the pages */
+  --paper:#fff;
+  --card:#f6f6f6;        /* link card background */
+  --stripe:#efefef;      /* table stripes, card hover */
+  --table-head:#a9a9a9;  /* kits table header row */
+  --shadow:var(--shadow);
+}
+*{box-sizing:border-box;}
+body{
+  background:var(--desk);
+  margin:0;
+  padding:24px 0 48px;
+  font-family:'Alegreya', serif;
+}
+.page{
+  width:612pt;
+  height:792pt;
+  background:var(--paper);
+  margin:0 auto 28px;
+  padding:32pt 36pt 26pt;
+  position:relative;
+  box-shadow:0 2px 14px var(--shadow);
+  font-size:9.2pt;
+  line-height:1.42;
+  color:var(--ink);
+  overflow:hidden;
+  page-break-after:always;
+  break-after:page;
+}
+.page:last-child{page-break-after:auto;break-after:auto;}
+
+/* home page: a single screen page that grows with its content */
+body.home .page{
+  height:auto;
+  max-width:calc(100% - 32px);
+  padding-bottom:46pt;
+  overflow:visible;
+}
+@media (max-width:640px){
+  body.home .page{padding:24pt 16px 46pt;}
+  body.home .footer{left:16px;right:16px;}
+}
+
+/* ---- Title (first page only) ---- */
+.title{
+  font-family:'IM Fell English SC', serif;
+  font-size:30pt;
+  text-align:center;
+  letter-spacing:3px;
+  margin:0 0 6pt;
+  font-weight:400;
+  line-height:1.1;
+}
+.title-rule{margin:0 0 11pt;}
+.title-rule .bar{height:1.1pt;background:var(--ink);}
+.title-rule .bar2{height:0.9pt;background:var(--rule-grey);margin-top:2.5pt;}
+
+/* running page title on later pages */
+.running-title{
+  font-family:'IM Fell English SC', serif;
+  font-size:13pt;
+  text-align:center;
+  letter-spacing:2px;
+  margin:0 0 6pt;
+  line-height:1.1;
+}
+.running-rule{height:1.1pt;background:var(--ink);margin-bottom:2.5pt;}
+.running-rule2{height:0.9pt;background:var(--rule-grey);margin-bottom:10pt;}
+
+/* ---- two column layout ---- */
+.columns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  column-gap:24pt;
+}
+.col-left{padding-right:6pt;}
+.col-right{padding-left:6pt;border-left:1pt solid var(--rule-light);}
+
+/* ---- section headers ---- */
+h2{
+  font-family:'Alegreya', serif;
+  font-size:14pt;
+  font-weight:400;
+  text-align:center;
+  margin:9pt 0 6pt;
+  line-height:1.15;
+}
+.columns > div > h2:first-child{margin-top:0;}
+.page > h2:first-of-type{margin-top:0;}
+
+h2::after {
+  --orn-w: 34px;   /* ornament width */
+  --orn-h: 20px;   /* ornament height */
+  --gap: 5px;      /* space between antler tips and the lines */
+
+  content: '';
+  display: block;
+  height: var(--orn-h);
+  margin-top: 3pt;
+  background: linear-gradient(90deg,
+    var(--rule-grey) calc(50% - var(--orn-w) / 2 - 1px),
+    var(--ink) 0 calc(50% + var(--orn-w) / 2 + 1px),
+    var(--rule-grey) 0);
+  --fletch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0.2 0.2 19.6 11.5'%3E%3Cpath d='M8.8 11.6L7.6 9.4L5.8 6.6L4.2 3.4L3.2 0.6 M7.6 9.4L4.4 8.4L1.4 8.8 M5.8 6.6L2.4 4.8L0.6 5.2 M6.8 8.2L7.6 5.2 M4.2 3.4L5.6 1.2 M4.4 8.4L3.4 6.8 M2.4 4.8L1.8 3.2 M11.2 11.6L12.4 9.4L14.2 6.6L15.8 3.4L16.8 0.6 M12.4 9.4L15.6 8.4L18.6 8.8 M14.2 6.6L17.6 4.8L19.4 5.2 M13.2 8.2L12.4 5.2 M15.8 3.4L14.4 1.2 M15.6 8.4L16.6 6.8 M17.6 4.8L18.2 3.2' stroke='black' stroke-width='0.65' fill='none' stroke-linejoin='miter' stroke-linecap='butt'/%3E%3C/svg%3E");
+  --line: linear-gradient(#000 0 0);
+  --mask:
+    var(--fletch) center / var(--orn-w) var(--orn-h) no-repeat,
+    var(--line) left 0 top 9px / calc(50% - var(--orn-w) / 2 - var(--gap)) 1px no-repeat,
+    var(--line) right 0 top 9px / calc(50% - var(--orn-w) / 2 - var(--gap)) 1px no-repeat;
+  -webkit-mask: var(--mask);
+          mask: var(--mask);
+}
+
+/* ---- sub headings (Initiative, Attack Procedure...) ---- */
+h3{
+  font-size:10.2pt;
+  font-style:italic;
+  font-weight:700;
+  margin:6pt 0 2pt;
+  line-height:1.2;
+}
+.columns h3:first-of-type{margin-top:4pt;}
+
+p{margin:0 0 5pt;}
+.tight p{margin:0;}
+
+b{font-weight:700;}
+
+/* ---- lists ---- */
+ul{list-style:none;margin:0 0 5pt;padding:0;}
+li{position:relative;padding-left:14pt;margin-bottom:0;}
+li::before{
+  content:'➺';
+  position:absolute;
+  left:0;
+  color:var(--ink);
+  font-size:9pt;
+  line-height:1;
+  transform:translateY(25%);
+}
+ul.sub{margin:0 0 0 2pt;}
+ul.sub li{padding-left:12pt;margin-bottom:0;}
+ul.sub li::before{
+  content:'-';
+  transform:translateY(25%);
+}
+li > p{margin:0;}
+
+/* ---- tables ---- */
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0 0 3pt;
+}
+td{
+  padding:2.6pt 5pt;
+  vertical-align:top;
+}
+tr:nth-child(even) td{background:var(--stripe);}
+td.n{
+  font-weight:700;
+  text-align:right;
+  width:1%;
+  white-space:nowrap;
+  padding-right:6pt;
+}
+table.roll td:not(.n){width:24%;}
+table.bonds td:not(.n){width:50%;}
+table.items th{
+  font-weight:700;
+  text-align:right;
+  vertical-align:top;
+  padding:2.6pt 6pt 2.6pt 5pt;
+  width:15%;
+}
+table.items td{width:35%;}
+tr:nth-child(even) th{background:var(--stripe);}
+table.signature th{width:22%;}
+table.signature td{width:78%;}
+
+table.kits td{width:25%;}
+table.kits tr.head th{
+  background:var(--table-head);
+  text-align:left;
+  font-weight:700;
+  padding:3pt 5pt;
+}
+table.kits tr:nth-child(even) td{background:none;}
+table.kits tr:nth-child(odd) td{background:var(--stripe);}
+
+.note{
+  font-size:7.4pt;
+  font-style:italic;
+  color:var(--ink-soft);
+  margin:0 0 10pt;
+}
+
+/* ---- link cards: .doc (home page contents), .xref (external table) ---- */
+a.doc, a.xref{
+  display:flex;
+  align-items:center;
+  border-top:1.1pt solid var(--ink);
+  border-bottom:0.9pt solid var(--rule-grey);
+  background:var(--card);
+  color:var(--ink);
+  text-decoration:none;
+}
+a.doc:hover, a.xref:hover{background:var(--stripe);}
+.doc-desc, .xref-desc{font-style:italic;}
+
+a.doc{gap:12pt;margin:0 0 12pt;padding:9pt 14pt;}
+.doc-arrow{font-size:20pt;line-height:1;}
+.doc-text{display:flex;flex-direction:column;line-height:1.35;}
+.doc-title{font-family:'IM Fell English SC', serif;font-size:15pt;letter-spacing:1.5px;}
+
+a.xref{gap:10pt;margin:14pt auto 0;width:70%;padding:7pt 12pt;}
+.xref-arrow{font-size:16pt;line-height:1;}
+.xref-text{display:flex;flex-direction:column;line-height:1.3;}
+.xref-title{font-family:'IM Fell English SC', serif;font-size:12pt;letter-spacing:1px;}
+.xref-url{font-size:7.2pt;letter-spacing:0.5px;color:var(--rule-grey);}
+
+/* ---- footer ---- */
+.footer{
+  position:absolute;
+  left:36pt; right:36pt; bottom:20pt;
+  border-top:1pt solid var(--rule-light);
+  padding-top:5pt;
+  display:flex;
+  justify-content:space-between;
+  font-size:7.2pt;
+  letter-spacing:1.5px;
+  color:var(--rule-grey);
+}
+
+@page{
+  size:612pt 792pt;
+  margin:0;
+}
+@media print{
+  body{background:var(--paper);padding:0;margin:0;}
+  .page{box-shadow:none;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
