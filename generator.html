@@ -7,13 +7,11 @@
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
 </head>
-<body class="home">
+<body class="home generator">
 
 <div class="page">
   <div class="title">Quiver Character</div>
   <div class="title-rule"><div class="bar"></div><div class="bar2"></div></div>
-
-  <button class="reroll" id="reroll">➺ Roll a new character</button>
 
   <div id="sheet"></div>
 
@@ -54,6 +52,30 @@ function kits(table) {
 
 const has = (kit, item) => kit.items.some(i => new RegExp(`\\b${item}\\b`, 'i').test(i));
 
+const normalize = name => name.toLowerCase().replace(/’/g, "'").trim();
+
+// Starting and Signature Items: name in <th>, description in the <td> after it
+function itemDescriptions(doc) {
+  const descs = {};
+  doc.querySelectorAll('table.items th').forEach(th => {
+    descs[normalize(th.textContent)] = th.nextElementSibling.textContent.trim();
+  });
+  return descs;
+}
+
+// Kits name items loosely ("3x vials", "Heavy Silvered Weapon", "Musical Instrument"),
+// so try a few spellings against the item tables
+function describe(kitItem, descs) {
+  const name = normalize(kitItem.replace(/^\d+x\s*/i, ''));
+  const lookup = n => descs[n] ?? descs[n.replace(/es$/, '')] ?? descs[n.replace(/s$/, '')];
+  // "Heavy Silvered Weapon" ➺ "Weapon, Heavy" + "Weapon, silvered"
+  const weapon = name.match(/^(.+) weapons?$/);
+  const found = weapon
+    ? weapon[1].split(' ').map(adj => descs[`weapon, ${adj}`])
+    : [lookup(name) ?? lookup(name.split(' ').pop())];
+  return found.filter(Boolean).join('. ');
+}
+
 function loadTables(doc) {
   return {
     description: entries(tableAfter(doc, 'Description')),
@@ -61,6 +83,7 @@ function loadTables(doc) {
     bonds: entries(tableAfter(doc, 'Bonds')),
     powerWords: ['Forms', 'Essence', 'Effect'].map(t => entries(tableAfter(doc, `Power Word: ${t}`))),
     kits: kits(tableAfter(doc, 'Kits')),
+    itemDescs: itemDescriptions(doc),
     relicLink: doc.querySelector('a.xref'),
     relicSpells: [],
   };
@@ -103,7 +126,10 @@ function render(c, t) {
     <h2>Bond</h2>
     <p>${c.bond}</p>
     <h2>Kit: ${c.kit.name}</h2>
-    ${list(c.kit.items)}`;
+    ${list(c.kit.items.map(item => {
+      const desc = describe(item, t.itemDescs);
+      return `<b>${item}</b>${desc ? `<span class="item-desc">${desc}</span>` : ''}`;
+    }))}`;
   if (c.powerWords.length) {
     html += `<h2>Grimoire</h2>${list(c.powerWords)}`;
   }
@@ -117,8 +143,8 @@ function render(c, t) {
       // Cairn couldn't be reached, so fall back to rolling by hand
       const times = c.relicRolls === 1 ? 'once' : `${c.relicRolls} times`;
       html += `<p>Roll ${times} on the Relic Spells table${c.relicRolls > 1 ? ' and pick your favorite' : ''}:</p>`;
+      html += t.relicLink ? t.relicLink.outerHTML : '';
     }
-    html += t.relicLink ? t.relicLink.outerHTML : '';
   }
   document.getElementById('sheet').innerHTML = html;
 }
@@ -131,9 +157,7 @@ fetch('tables.html')
       try { tables.relicSpells = await loadRelicSpells(tables.relicLink.href); }
       catch (err) { console.warn('Relic spells unavailable, falling back to the link', err); }
     }
-    const go = () => render(roll(tables), tables);
-    document.getElementById('reroll').addEventListener('click', go);
-    go();
+    render(roll(tables), tables);
   })
   .catch(err => {
     document.getElementById('sheet').innerHTML =

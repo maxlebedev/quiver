@@ -248,6 +248,12 @@ a.xref{gap:10pt;margin:14pt auto 0;width:70%;padding:7pt 12pt;}
 .xref-title{font-family:'IM Fell English SC', serif;font-size:12pt;letter-spacing:1px;}
 .xref-url{font-size:7.2pt;letter-spacing:0.5px;color:var(--rule-grey);}
 
+/* ---- generator: centered character sheet, no list arrows ---- */
+body.generator #sheet{text-align:center;}
+body.generator #sheet li{padding-left:0;margin-bottom:3pt;}
+body.generator #sheet li::before{content:none;}
+.item-desc{display:block;font-style:italic;color:var(--ink-soft);}
+
 /* ---- footer ---- */
 .footer{
   position:absolute;
