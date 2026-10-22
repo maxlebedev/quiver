@@ -127,11 +127,15 @@ function render(c, t) {
     <p>${c.bond}</p>
     <h2>Kit: ${c.kit.name}</h2>
     ${list(c.kit.items.map(item => {
-      const desc = describe(item, t.itemDescs);
-      return `<b>${item}</b>${desc ? `<span class="item-desc">${desc}</span>` : ''}`;
+      let desc = describe(item, t.itemDescs);
+      // "3x Torches" already says how many, so drop "3 charges" from the description
+      if (/^\d+x\s/i.test(item)) {
+        desc = desc.replace(/(^|[,.]\s*)\d+ charges?(?=[,.]|$)/gi, '').replace(/^[,.]\s*/, '');
+      }
+      return `<b>${item}</b>${desc ? `: <span class="item-desc">${desc}</span>` : ''}`;
     }))}`;
   if (c.powerWords.length) {
-    html += `<h2>Grimoire</h2>${list(c.powerWords)}`;
+    html += `<h2>Grimoire</h2><p>${c.powerWords.join(', ')}</p>`;
   }
   if (c.relicRolls) {
     const item = has(c.kit, 'Relic') ? 'Relic' : 'Talisman';
