@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiver Character</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+</head>
+<body class="home">
+
+<div class="page">
+  <div class="title">Quiver Character</div>
+  <div class="title-rule"><div class="bar"></div><div class="bar2"></div></div>
+
+  <button class="reroll" id="reroll">➺ Roll a new character</button>
+
+  <div id="sheet"></div>
+
+  <div class="footer">QUIVER</div>
+</div>
+
+<script>
+// All content is read from tables.html at runtime, so nothing here duplicates it.
+// fetch() needs the site served over http (e.g. `python -m http.server`), not opened from file://
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+// The table that follows the <h2> with this exact text
+function tableAfter(doc, heading) {
+  const h2 = [...doc.querySelectorAll('h2')].find(h => h.textContent.trim() === heading);
+  let el = h2 && h2.nextElementSibling;
+  while (el && el.tagName !== 'TABLE') el = el.nextElementSibling;
+  if (!el) throw new Error(`No table found under "${heading}" in tables.html`);
+  return el;
+}
+
+// Every non-number cell is an entry; innerHTML keeps the <b> in bonds
+const entries = table => [...table.querySelectorAll('td:not(.n)')].map(td => td.innerHTML.trim());
+
+// Kits are laid out four to a tbody: a header row of names, then one row per item
+function kits(table) {
+  const result = [];
+  for (const tbody of table.tBodies) {
+    const [head, ...rows] = tbody.rows;
+    [...head.cells].forEach((th, i) => {
+      result.push({
+        name: th.textContent.replace(/^\d+\.\s*/, ''),
+        items: rows.map(r => r.cells[i].textContent.trim()).filter(Boolean),
+      });
+    });
+  }
+  return result;
+}
+
+const has = (kit, item) => kit.items.some(i => new RegExp(`\\b${item}\\b`, 'i').test(i));
+
+function loadTables(doc) {
+  return {
+    description: entries(tableAfter(doc, 'Description')),
+    occupation: entries(tableAfter(doc, 'Occupation')),
+    bonds: entries(tableAfter(doc, 'Bonds')),
+    powerWords: ['Forms', 'Essence', 'Effect'].map(t => entries(tableAfter(doc, `Power Word: ${t}`))),
+    kits: kits(tableAfter(doc, 'Kits')),
+    relicLink: doc.querySelector('a.xref'),
+    relicSpells: [],
+  };
+}
+
+// Cairn's Spellbooks page (the URL comes from the link card in tables.html) is a d100 table:
+// number, name, description. The italic part of a description is spellbook flavor, so drop it
+async function loadRelicSpells(url) {
+  const doc = new DOMParser().parseFromString(await (await fetch(url)).text(), 'text/html');
+  return [...doc.querySelectorAll('table tbody tr')].map(r => {
+    r.cells[2].querySelectorAll('em').forEach(em => em.remove());
+    const text = r.cells[2].textContent.trim().replace(/\.(\s*\.)+$/, '.');
+    return {name: r.cells[1].textContent.trim(), text};
+  });
+}
+
+function roll(t) {
+  const kit = pick(t.kits);
+  const background = () => `${pick(t.description)} ${pick(t.occupation)}`;
+  const c = {
+    backgrounds: [background(), background()],
+    bond: pick(t.bonds),
+    kit,
+    // "roll 5 times on any of the tables": each roll picks a table at random
+    powerWords: has(kit, 'Grimoire') ? Array.from({length: 5}, () => pick(pick(t.powerWords))) : [],
+    relicRolls: has(kit, 'Relic') ? 3 : has(kit, 'Talisman') ? 1 : 0,
+    relicSpells: [],
+  };
+  if (t.relicSpells.length) {
+    c.relicSpells = Array.from({length: c.relicRolls}, () => pick(t.relicSpells));
+  }
+  return c;
+}
+
+function render(c, t) {
+  const list = items => `<ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+  let html = `
+    <h2>Backgrounds</h2>
+    ${list([`<b>Past:</b> ${c.backgrounds[0]}`, `<b>Present:</b> ${c.backgrounds[1]}`])}
+    <h2>Bond</h2>
+    <p>${c.bond}</p>
+    <h2>Kit: ${c.kit.name}</h2>
+    ${list(c.kit.items)}`;
+  if (c.powerWords.length) {
+    html += `<h2>Grimoire</h2>${list(c.powerWords)}`;
+  }
+  if (c.relicRolls) {
+    const item = has(c.kit, 'Relic') ? 'Relic' : 'Talisman';
+    html += `<h2>${item}</h2>`;
+    if (c.relicSpells.length) {
+      if (c.relicSpells.length > 1) html += `<p>Pick your favorite:</p>`;
+      html += list(c.relicSpells.map(s => `<b>${s.name}</b>: ${s.text}`));
+    } else {
+      // Cairn couldn't be reached, so fall back to rolling by hand
+      const times = c.relicRolls === 1 ? 'once' : `${c.relicRolls} times`;
+      html += `<p>Roll ${times} on the Relic Spells table${c.relicRolls > 1 ? ' and pick your favorite' : ''}:</p>`;
+    }
+    html += t.relicLink ? t.relicLink.outerHTML : '';
+  }
+  document.getElementById('sheet').innerHTML = html;
+}
+
+fetch('tables.html')
+  .then(r => r.text())
+  .then(async text => {
+    const tables = loadTables(new DOMParser().parseFromString(text, 'text/html'));
+    if (tables.relicLink) {
+      try { tables.relicSpells = await loadRelicSpells(tables.relicLink.href); }
+      catch (err) { console.warn('Relic spells unavailable, falling back to the link', err); }
+    }
+    const go = () => render(roll(tables), tables);
+    document.getElementById('reroll').addEventListener('click', go);
+    go();
+  })
+  .catch(err => {
+    document.getElementById('sheet').innerHTML =
+      `<p class="note">Couldn't load tables.html (${err.message}). If you opened this file directly, serve the folder instead: <code>python -m http.server</code></p>`;
+  });
+</script>
+
+</body>
+</html>

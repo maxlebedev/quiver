@@ -32,7 +32,7 @@
   --card:#f6f6f6;        /* link card background */
   --stripe:#efefef;      /* table stripes, card hover */
   --table-head:#a9a9a9;  /* kits table header row */
-  --shadow:var(--shadow);
+  --shadow:rgba(0,0,0,0.18);  /* page drop shadow */
 }
 *{box-sizing:border-box;}
 body{
