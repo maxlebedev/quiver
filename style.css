@@ -65,8 +65,11 @@ body.home .page{
   padding-bottom:46pt;
   overflow:visible;
 }
+/* no footer (index): bottom padding matches the top */
+body.home .page:not(:has(.footer)){padding-bottom:32pt;}
 @media (max-width:640px){
   body.home .page{padding:24pt 16px 46pt;}
+  body.home .page:not(:has(.footer)){padding-bottom:24pt;}
   body.home .footer{left:16px;right:16px;}
 }
 
@@ -238,6 +241,7 @@ a.doc:hover, a.xref:hover{background:var(--stripe);}
 .doc-desc, .xref-desc{font-style:italic;}
 
 a.doc{gap:12pt;margin:0 0 12pt;padding:9pt 14pt;}
+a.doc:last-of-type{margin-bottom:0;}
 .doc-arrow{font-size:20pt;line-height:1;}
 .doc-text{display:flex;flex-direction:column;line-height:1.35;}
 .doc-title{font-family:'IM Fell English SC', serif;font-size:15pt;letter-spacing:1.5px;}
