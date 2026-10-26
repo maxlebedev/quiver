@@ -271,6 +271,42 @@ body.generator #sheet li::before{content:none;}
   color:var(--rule-grey);
 }
 
+/* ---- phones: printed sheets become full-width cards that grow with content ---- */
+@media (max-width:640px){
+  body:not(.home){padding:0 0 16px;}
+  body:not(.home) .page{
+    width:auto;
+    height:auto;
+    overflow:visible;
+    margin:0 0 12px;
+    padding:20pt 16px 16pt;
+    font-size:10pt;
+  }
+  .columns{grid-template-columns:1fr;}
+  .col-left{padding-right:0;}
+  .col-right{padding-left:0;border-left:none;}
+  .columns > .col-right > h2:first-child{margin-top:9pt;}
+  body:not(.home) .footer{position:static;margin-top:14pt;}
+  a.xref{width:auto;}
+
+  /* roll tables keep four pairs across, a point smaller and tighter */
+  table.roll{font-size:8.2pt;}
+  table.roll td{padding:3px 2px;}
+  table.roll td.n{padding-left:6px;padding-right:3px;}
+  table.roll td.n:first-child{padding-left:0;}
+  table.roll td:not(.n){width:auto;}
+
+  /* starting items: one item per line, still alphabetical */
+  table.items:not(.signature){display:grid;grid-template-columns:auto 1fr;}
+  table.items:not(.signature) tbody, table.items:not(.signature) tr{display:contents;}
+  table.items:not(.signature) th, table.items:not(.signature) td{width:auto;background:none;}
+  table.items:not(.signature) tr > :nth-child(n+3){background:var(--stripe);}
+}
+@media (max-width:340px){
+  table.roll{font-size:7.6pt;}
+  table.roll td.n:not(:first-child){padding-left:4px;}
+}
+
 @page{
   size:612pt 792pt;
   margin:0;
