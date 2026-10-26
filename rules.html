@@ -51,12 +51,13 @@
         <p><b>Crit</b>: Attack that rolls max die value. Bypass Armor and inflict direct damage</p>
         <p><b>Hit</b>: Attack is greater than enemy Armor. Inflict the difference in damage</p>
         <p><b>Graze</b>: Attack at/under enemy Armor. Decrease Armor by 1</p>
-        <p><b>Bulky</b>: takes 2 inventory slots</p>
-        <p><b>Tiny</b>: takes half of an inventory slot</p>
+        <p><b>Bulky</b>: Takes 2 inventory slots</p>
+        <p><b>Tiny</b>: Takes half of an inventory slot</p>
+        <p><b>Treatable</b>: A wound that can be temporarily alleviated by a Poultice</p>
         <p><b>Stacks X</b>: X of these fit per inventory slot</p>
         <p><b>Step up</b>: Increase the die size one step d4➺d6➺d8➺d10➺d12</p>
         <p><b>Step Down</b>: Decrease the die size one step d12➺d10➺d8➺d6➺d4</p>
-        <p><b>Push</b>: pay a cost, then reroll any rolled dice</p>
+        <p><b>Push</b>: Pay a cost, then reroll any rolled dice</p>
         <p><b>Condition</b>: Stored in the inventory like items</p>
         <p><b>Guard</b>: Your buffer against harm. Starts at 6. When it hits 0, take a wound, reset to 6, and carry over any excess damage.</p>
       </div>
@@ -71,14 +72,22 @@
       <p>If you get a condition but have no free slots, break an item and place the condition over it</p>
       <ul>
         <li><b>Fatigue</b>: acquired by failing to cast spells, or skipping food/sleep, straining yourself</li>
-        <li><b>Wound</b>: acquired by taking damage. The 6th Wound kills you
-          <ul class="sub">
-            <li>Some are serious, debilitating injuries that may never heal naturally. A shattered knee. A missing eye. A shadow curse</li>
-          </ul>
+	<li><b>Wound</b>: acquired by taking damage. <i> A shattered knee. A missing eye. A shadow curse </i>
         </li>
         <li><b>Stress</b>: acquired by coming face to face with the unthinkable</li>
       </ul>
       <p>The list is not exhaustive</p>
+
+      <h2>Wounds</h2>
+
+      <p>When you gain a wound, roll a d6 + existing wound count</p>
+      <table class="pairs">
+        <tr><td class="n">1</td><td>Just a scratch</td><td class="n">6</td><td>Your attack rolls are <b>stepped down</b>. <b>Treatable</b></td></tr>
+        <tr><td class="n">2</td><td>Superficial disfigurement</td><td class="n">7</td><td>Opposing attacks are <b>stepped up</b>. <b>Treatable</b></td></tr>
+        <tr><td class="n">3</td><td>Destroy a random inventory item</td><td class="n">8</td><td>Lose a limb</td></tr>
+        <tr><td class="n">4</td><td><b>Bane</b> to Action rolls. <b>Treatable</b></td><td class="n">9</td><td>Lose consciousness. Reach town within 1 day or die</td></tr>
+        <tr><td class="n">5</td><td><b>Bane</b> to Reaction rolls. <b>Treatable</b></td><td class="n">10+</td><td>Die</td></tr>
+      </table>
 
       <h2>Rest</h2>
 

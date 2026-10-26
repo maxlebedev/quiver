@@ -197,7 +197,7 @@ td.n{
   padding-right:6pt;
 }
 table.roll td:not(.n){width:24%;}
-table.bonds td:not(.n){width:50%;}
+table.pairs td:not(.n){width:50%;}
 table.items th{
   font-weight:700;
   text-align:right;
