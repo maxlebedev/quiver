@@ -98,6 +98,12 @@ async function loadRelicSpells(url) {
   });
 }
 
+function rollUnique(n, rollOnce) {
+  const results = new Set();
+  while (results.size < n) results.add(rollOnce());
+  return [...results];
+}
+
 function roll(t) {
   const kit = pick(t.kits);
   const background = () => `${pick(t.description)} ${pick(t.occupation)}`;
@@ -105,8 +111,8 @@ function roll(t) {
     backgrounds: [background(), background()],
     bond: pick(t.bonds),
     kit,
-    // "roll 5 times on any of the tables": each roll picks a table at random
-    powerWords: has(kit, 'Grimoire') ? Array.from({length: 5}, () => pick(pick(t.powerWords))) : [],
+    // "roll 5 times on any of the tables": each roll picks a table at random, rerolling repeats
+    powerWords: has(kit, 'Grimoire') ? rollUnique(5, () => pick(pick(t.powerWords))) : [],
     relicRolls: has(kit, 'Relic') ? 3 : has(kit, 'Talisman') ? 1 : 0,
     relicSpells: [],
   };
