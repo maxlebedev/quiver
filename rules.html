@@ -132,19 +132,19 @@
         <li>Remove one die for every <b>bane</b></li>
       </ul>
       <p>If the pool has 0 dice, roll two dice and take the lower</p>
-      <p>If at least one of the dice you rolled was a 6, you succeed</p>
+      <p>If the highest die you rolled was a 6, you succeed</p>
       <p>You may gain <b>Fatigue</b> to <b>push</b></p>
 
       <h2>Reaction Rolls</h2>
 
       <p>When you avoid a consequence or cast a spell, build and roll a dice pool</p>
       <ul>
-        <li>Start with 6 dice, then remove one for every condition you have</li>
-        <li>Remove one die if your inventory is full</li>
-        <li>Remove one die for every <b>bane</b></li>
+        <li>Start with 6 dice</li>
+        <li>Take a <b>bane</b> for every condition you have</li>
+        <li>Take a <b>bane</b> if your inventory is full</li>
       </ul>
       <p>If the result is 0, roll two dice and take the lower</p>
-      <p>If at least one of the dice you rolled was a 6, you succeed</p>
+      <p>If the highest die you rolled was a 6, you succeed</p>
       <p>You may gain <b>Fatigue</b> to <b>push</b></p>
 
       <h2>Words of Power</h2>
@@ -154,7 +154,11 @@
       <p>Make a Reaction Roll</p>
       <ul>
         <li>An intent that stretches its Words, causes direct harm, or requires immense power is made with <b>banes</b></li>
-        <li>On a success, the spell is cast</li>
+        <li>On a success, the spell is cast
+          <ul class="sub">
+            <li>If the spell deals damage, roll a d6 for each <b>bane</b></li>
+          </ul>
+        </li>
         <li>On a failure, the caster gains one <b>Fatigue</b></li>
         <li>The caster may gain another <b>Fatigue</b> to <b>push</b></li>
       </ul>
