@@ -187,7 +187,7 @@
       <ul>
         <li>Players start every combat with 6 <b>Guard</b>, which Enemies deplete by attacking</li>
         <li>When your <b>Guard</b> hits 0, roll on the Wound Table</li>
-        <li>Then reset your <b>Guard</b> to 6 and continue applying damage</li>
+        <li>Then reset your <b>Guard</b> to max and apply carryover damage</li>
       </ul>
 
       <h3>Maneuvers</h3>
@@ -206,12 +206,13 @@
       <h2>Wounds</h2>
 
       <p>When you gain a <b>Wound</b>, roll a d6 + existing wound count</p>
+      <p>When you gain a <b>Wound</b>, roll d6. Add 1 for each old wound</p>
       <table class="wounds">
         <tr><td class="n">1</td><td>Just a scratch</td><td class="n">6</td><td>Your attack rolls are <b>stepped&nbsp;down</b>. <b>Treatable</b></td></tr>
-        <tr><td class="n">2</td><td>Superficial disfigurement</td><td class="n">7</td><td>Opposing attacks are <b>stepped&nbsp;up</b>. <b>Treatable</b></td></tr>
+        <tr><td class="n">2</td><td>Superficial disfigurement</td><td class="n">7</td><td>Decrease Maximum <b>Guard</b> by 2. <b>Treatable</b></td></tr>
         <tr><td class="n">3</td><td>Destroy a random inventory item</td><td class="n">8</td><td>Lose a limb</td></tr>
         <tr><td class="n">4</td><td><b>Bane</b> to Action rolls. <b>Treatable</b></td><td class="n">9</td><td>Lose consciousness. Reach town within 1 day or die</td></tr>
-        <tr><td class="n">5</td><td><b>Bane</b> to Reaction rolls. <b>Treatable</b></td><td class="n">10+</td><td>Die</td></tr>
+        <tr><td class="n">5</td><td><b>Bane</b> to Reaction rolls. <b>Treatable</b></td><td class="n">10+</td><td>You have died</td></tr>
       </table>
     </div>
   </div>
