@@ -69,8 +69,8 @@
     <div class="col-right">
 
       <h2>Inventory</h2>
-        Your inventory is the heart of your character sheet. It stores your items, as well as any conditions you have. 
-        Your maximum inventory size is 12. 2 for your hands, 10 on your body.
+        <p>Your inventory is the center of your character sheet. It stores your items, as well as any conditions you have.
+        Your maximum inventory size is 12. 2 for your hands, 10 on your body.</p>
       <h3>Conditions</h3>
       If you get a condition but have no free slots, break an item and place the condition over it.
       <ul>
@@ -175,12 +175,13 @@
       </ul>
 
       <h3>Attack Procedure</h3>
-      <p>Roll your weapon's Attack die and compare it to enemy Armor</p>
-      <ul>
-        <li>If you roll the highest number, you <b>Crit</b>. Deal your Attack as direct damage (ignoring Armor)</li>
-        <li>If Attack > Armor, you <b>Hit</b>. Deal the difference in damage</li>
-        <li>Otherwise, you <b>Graze</b>. Take the difference as retaliation damage, and reduce enemy Armor by 1</li>
-      </ul>
+      <p>Roll your weapon's Attack die and compare it to enemy Armor.</p>
+      <p>If you roll over, you <b>Hit</b>. Otherwise, you <b>Graze</b>. If you roll the highest die result, you <b>Crit</b> instead.</p>
+      <table>
+        <tr><td class="n">Crit</td><td>Deal your Attack as direct damage (ignoring Armor) <i>and</i> reduce enemy Armor by 1</td></tr>
+        <tr><td class="n">Hit</td><td>Deal the difference in damage <i>or</i> reduce Armor by 1</td></tr>
+        <tr><td class="n">Graze</td><td>Take the difference as retaliation damage. Enemy chooses to take your damage <i>or</i> reduce Armor by 1</td></tr>
+      </table>
 
       <h3>Guard</h3>
       <ul>
