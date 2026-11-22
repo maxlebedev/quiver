@@ -51,7 +51,6 @@
         <p><b>Graze</b>: Attack at or under enemy Armor</p>
         <p><b>Bulky</b>: Takes 2 inventory slots</p>
         <p><b>Tiny</b>: Takes half of an inventory slot</p>
-        <p><b>Treatable</b>: A wound that can be temporarily alleviated by a Poultice</p>
         <p><b>Stacks X</b>: X of these fit per inventory slot</p>
         <p><b>Step Up</b>: Increase the die size one step d4➺d6➺d8➺d10➺d12</p>
         <p><b>Step Down</b>: Decrease the die size one step d12➺d10➺d8➺d6➺d4</p>
@@ -205,13 +204,14 @@
 
       <h2>Wounds</h2>
 
-      <p>When you gain a <b>Wound</b>, roll d6. Add 1 for each old wound</p>
+      <p>When you gain a <b>Wound</b>, roll d6 and add 1 for each old wound</p>
+      <p>The <u>underlined</u> portions can be supressed with a poultice</p>
       <table class="wounds">
-        <tr><td class="n">1</td><td>Just a scratch</td><td class="n">6</td><td>Your attack rolls are <b>stepped&nbsp;down</b>. <b>Treatable</b></td></tr>
-        <tr><td class="n">2</td><td>Superficial disfigurement</td><td class="n">7</td><td>Decrease maximum <b>Guard</b> by 2. <b>Treatable</b></td></tr>
-        <tr><td class="n">3</td><td>Destroy a random inventory item</td><td class="n">8</td><td>Lose a limb</td></tr>
-        <tr><td class="n">4</td><td><b>Bane</b> to Action rolls. <b>Treatable</b></td><td class="n">9</td><td>Lose consciousness. Reach town within 1 day or die</td></tr>
-        <tr><td class="n">5</td><td><b>Bane</b> to Reaction rolls. <b>Treatable</b></td><td class="n">10+</td><td>You have died</td></tr>
+        <tr><td class="n">1</td><td>Just a scratch</td><td class="n">6</td><td><u>Your attack rolls are <b>stepped&nbsp;down</b></u></td></tr>
+        <tr><td class="n">2</td><td>Superficial disfigurement</td><td class="n">7</td><td><u>Decrease maximum <b>Guard</b> by 2</u></td></tr>
+        <tr><td class="n">3</td><td>Destroy a random inventory item</td><td class="n">8</td><td>Lose a limb. <u>All action rolls cost a fatigue</u></td></tr>
+        <tr><td class="n">4</td><td><u><b>Bane</b> to Action rolls</u></td><td class="n">9</td><td>Lose consciousness. Gain a wound every d6 hours</td></tr>
+        <tr><td class="n">5</td><td><u><b>Bane</b> to Reaction rolls</u></td><td class="n">10+</td><td>You have died</td></tr>
       </table>
     </div>
   </div>
